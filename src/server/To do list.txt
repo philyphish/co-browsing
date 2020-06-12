@@ -1,0 +1,7 @@
+To do list
+1. write socket id to redis
+2. read socket id from redis
+3. move a secondary client screen with the primary client screen
+4. Create reppo
+5. listen for new clients
+6. where are all the extra clients coming from
