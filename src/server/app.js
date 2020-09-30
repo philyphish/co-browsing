@@ -13,7 +13,7 @@ const rdClient = redis.createClient({
 const app = express();
 
 const clientPath = '../../dist/redis-ws';
-const port = 3000;
+const port = 8000;
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -45,7 +45,16 @@ io.on('connection', client => {
     console.info('----------------------DISCONNECTED--------------------');
   });
   client.on('scroll', yPosition => {
+    io.emit('scroll', yPosition);
     console.info(yPosition);
+  });
+  client.on('sendDOM', client_dom => {
+    io.emit('clientDOM', client_dom);
+    console.log(client_dom);
+  });
+
+  client.on('windowResize', windowSize => {
+    io.emit('windowResize', windowSize);
   });
   client.on('request', clientMsg => {
     console.log('Message recieved from client', clientMsg);
@@ -75,7 +84,10 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.json({
+    message: err.message,
+    error: err
+  });
 });
 
 rdClient.on('error', error => {

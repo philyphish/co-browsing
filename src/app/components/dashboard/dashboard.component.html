@@ -1,6 +1,15 @@
 <div (scroll)='sendScroll($event)'>
     <h2>Dashboard</h2>
     <p>{{connectionState}}</p>
+    <table>
+        <tr>
+            <td>Client Index</td>
+            <td>Client ID</td>
+        </tr>
+        <tr *ngFor='let client of clientList'>
+            <td>{{ client.clientIndex }}</td>
+            <td>{{ client.clientId }}</td>
+        </tr></table>
     <button (click)='submitMsg()'>Submit</button>
     <p>Lorem ipsum dolor sit amet, ut homero munere vis. Nec dicam qualisque urbanitas no, in vim dolore liberavisse. Eu pro nostro fabulas, vel tritani insolens iudicabit ei. Cum latine necessitatibus in, pro id affert copiosae tincidunt, vero debet scripta eu cum.
 
