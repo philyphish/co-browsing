@@ -15,6 +15,8 @@ export class DashboardComponent implements OnInit {
   public socket = io('ws://localhost:8000');
   public clientList = [];
   public clients;
+  public windowHeight;
+  public windowWidth;
 
   @HostListener('window:scroll', ['$event'])
   sendScroll(event) {
@@ -24,12 +26,26 @@ export class DashboardComponent implements OnInit {
 
 @HostListener('window:resize', ['$event'])
 sendWindowSize(event) {
-  this.socket.emit('windowResize', window.innerWidth);
+  if (window.innerHeight !== this.windowHeight) {
+    this.socket.emit('windowResize', {'type': 'height','size':window.innerHeight});
+    this.windowHeight = window.innerHeight;
+  } else { 
+    this.socket.emit('windowResize', {'type': 'width', 'size': window.innerWidth});
+    this.windowWidth = window.innerWidth;
+  }  
+}
+
+@HostListener('window:mousemove', ['$event'])
+sendmouseMove(event) {
+  this.socket.emit('mouseMove', {'clientX': event.clientX, 'clientY': event.clientY});
+  
 }
   constructor() {
    }
 
   ngOnInit() {
+    this.windowHeight = window.innerHeight;
+    this.windowWidth = window.innerWidth;
     const client_dom = document.getElementsByTagName('HTML')[0].innerHTML;
 
       this.socket.on('emitClients', clients => {

@@ -46,15 +46,16 @@ io.on('connection', client => {
   });
   client.on('scroll', yPosition => {
     io.emit('scroll', yPosition);
-    console.info(yPosition);
   });
   client.on('sendDOM', client_dom => {
     io.emit('clientDOM', client_dom);
-    console.log(client_dom);
   });
 
   client.on('windowResize', windowSize => {
     io.emit('windowResize', windowSize);
+  });
+  client.on('mouseMove', mousePositions => {
+    io.emit('mouseMove', mousePositions);
   });
   client.on('request', clientMsg => {
     console.log('Message recieved from client', clientMsg);
